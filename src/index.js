@@ -46,6 +46,7 @@ class Game extends React.Component {
 			}],
 			xIsNext: true,
 			stepNumber: 0,
+			moveOrder: 'forward',
 		};
 	}
 
@@ -75,6 +76,13 @@ class Game extends React.Component {
 			xIsNext: (step % 2) === 0,			
 		});
 	}
+	
+	setMoveDisplayOrder()
+	{
+		this.setState({
+			moveOrder: (this.state.moveOrder == "forward") ? "reverse" : "forward",
+		})
+	}
   	
   render() {
   	const history = this.state.history;
@@ -97,6 +105,10 @@ class Game extends React.Component {
   		status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
   	}
   	
+  	const orderButton = (
+  		<button onClick={() => this.setMoveDisplayOrder()}>View Moves in {(this.state.moveOrder == "forward") ? "reverse" : "forward"} direction</button>
+  	);
+  	
     return (
       <div className="game">
         <div className="game-board">
@@ -107,7 +119,8 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
-          <ol>{moves}</ol>
+          <div>{orderButton}</div>
+          <ol style={this.state.moveOrder == "reverse" ? {display: 'flex', flexDirection: 'column-reverse'} : {}}>{moves}</ol>
         </div>
       </div>
     );
